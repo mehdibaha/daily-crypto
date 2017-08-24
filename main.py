@@ -9,18 +9,13 @@ from coinbase.wallet.client import Client
 from sendgrid.helpers.mail import *
 
 def send_mail(sender, recipient, subject):
-    # Create a text/plain message
     sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
-    # Creating mail
     from_email = Email(sender[0], sender[1])
     to_email = Email(recipient)
-    content = Content('text/plain', '')
+    content = Content("text/plain", " ")
     mail = Mail(from_email, subject, to_email, content)
-    print(mail.get())
-    # Sending email
     try:
-        res = sg.client.mail.send.post(request_body=mail.get())
-        print(res)
+        response = sg.client.mail.send.post(request_body=mail.get())
     except Exception as error:
         print(f'Email not sent for {recipient}.\nFollowing error has occured:\n{error}')
 
@@ -44,4 +39,3 @@ def do_job():
     recipient = '***REMOVED***'
     send_mail(sender, recipient, subject)
 
-do_job()
