@@ -1,28 +1,30 @@
 import coinbase
 import os
+import sendgrid
+
+from dotenv import find_dotenv, load_dotenv
+load_dotenv(find_dotenv())
 
 from coinbase.wallet.client import Client
+from sendgrid.helpers.mail import *
 
-def send_mail(sender, recipient, subject, template_id):
+def send_mail(sender, recipient, subject):
     # Create a text/plain message
     sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
     # Creating mail
-    mail = Mail()
-    mail.from_email = Email(sender[0], sender[1])
-    mail.template_id = template_id
-    # Substitutes
-    personalization = Personalization()
-    personalization.add_to(Email(recipient))
-    mail.add_personalization(personalization)
-    mail.personalizations[0].add_substitution(Substitution('-subject-', subject))
-
+    from_email = Email(sender[0], sender[1])
+    to_email = Email(recipient)
+    content = Content('text/plain', '')
+    mail = Mail(from_email, subject, to_email, content)
+    print(mail.get())
     # Sending email
     try:
-        sg.client.mail.send.post(request_body=mail.get())
+        res = sg.client.mail.send.post(request_body=mail.get())
+        print(res)
     except Exception as error:
-        print(f'Email not sent for {recipient}. Following error has occured:\n{error}')
+        print(f'Email not sent for {recipient}.\nFollowing error has occured:\n{error}')
 
-def get_current_gain():
+def get_current_gains():
     api_key, api_secret = os.environ.get('API_KEY'), os.environ.get('API_SECRET')
     client = Client(api_key, api_secret)
 
@@ -33,11 +35,13 @@ def get_current_gain():
         trans = client.get_transactions(id)['data']
         nat_payments = sum([float(t['native_amount']['amount']) for t in trans])
         gains += nat_bal - nat_payments
+    return '{:.2f}'.format(gains)
 
 def do_job():
-    gain = get_current_gain()
-    sender = ('no-reply@cb-gains.herokuapp.com', 'Coinbase')
-    template_id = 'c871e900-fc06-45b5-b037-7ec58821ce27'
-    subject = f'Your gains in Coinbase are currently: {gain}€'
+    gains = get_current_gains() or 'N/A'
+    sender = ('***REMOVED***', 'Coinbase')
+    subject = f'Your gains in Coinbase are currently: {gains}€'
+    recipient = '***REMOVED***'
+    send_mail(sender, recipient, subject)
 
-    send_mail(sender, '***REMOVED***', subject, template_id)
+do_job()
