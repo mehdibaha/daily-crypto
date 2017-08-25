@@ -16,8 +16,7 @@ def send_mail(sender, recipient, subject, message):
     to_email = Email(recipient)
     content = Content('text/plain', message)
     mail = Mail(from_email, subject, to_email, content)
-    print(mail.get())
-    # response = sg.client.mail.send.post(request_body=mail.get())
+    response = sg.client.mail.send.post(request_body=mail.get())
 
 def get_current_gains():
     api_key, api_secret = os.environ.get('API_KEY'), os.environ.get('API_SECRET')
