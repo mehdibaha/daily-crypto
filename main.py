@@ -16,7 +16,8 @@ def send_mail(sender, recipient, subject, message):
     to_email = Email(recipient)
     content = Content('text/plain', message)
     mail = Mail(from_email, subject, to_email, content)
-    response = sg.client.mail.send.post(request_body=mail.get())
+    print(mail.get())
+    # response = sg.client.mail.send.post(request_body=mail.get())
 
 def get_current_gains():
     api_key, api_secret = os.environ.get('API_KEY'), os.environ.get('API_SECRET')
@@ -41,8 +42,8 @@ def do_job():
         # Setting mail
         sender = ('no-reply@cb-24613.com', 'Crypto Daily')
         recipient = 'elmehdi.baha@gmail.com'
-        date = datetime.datetime.now().strftime('%d %b %Y')
-        subject = f'As of {date}, your total gains are: {total}€'
+        date = datetime.datetime.now().strftime('%d/%m/%Y')
+        subject = f'[{date}] Your total gains are: {total}€'
         message = '\n'.join([f'Gains in {curr}: {amt}€' for curr, amt in gains.items()])
         # Sending mail
         send_mail(sender, recipient, subject, message)
