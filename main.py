@@ -2,9 +2,6 @@ import coinbase
 import os
 import sendgrid
 
-from dotenv import find_dotenv, load_dotenv
-load_dotenv(find_dotenv())
-
 from coinbase.wallet.client import Client
 from sendgrid.helpers.mail import *
 
@@ -45,4 +42,6 @@ def do_job():
         send_mail(sender, recipient, subject, message)
     except Exception as e:
         print(f'Following error occured: {e}')
+
+do_job()
 
