@@ -46,6 +46,7 @@ def do_job():
         message = '\n'.join([f'Gains in {curr}: {amt}€' for curr, amt in gains.items()])
         # Sending mail
         send_mail(sender, recipient, subject, message)
+        print(f'Mail has been set to {recipient}')
     except Exception as e:
         print(f'Following error occured: {e}')
 
