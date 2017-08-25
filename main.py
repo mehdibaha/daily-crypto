@@ -1,9 +1,14 @@
 import coinbase
+import datetime
 import os
 import sendgrid
 
 from coinbase.wallet.client import Client
 from sendgrid.helpers.mail import *
+
+if not os.environ.get('PROD'):
+    from dotenv import find_dotenv, load_dotenv
+    load_dotenv(find_dotenv())
 
 def send_mail(sender, recipient, subject, message):
     sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
@@ -36,7 +41,8 @@ def do_job():
         # Setting mail
         sender = ('no-reply@cb-24613.com', 'Crypto Daily')
         recipient = 'elmehdi.baha@gmail.com'
-        subject = f'Your gains in Coinbase are currently: {total}€'
+        date = datetime.datetime.now().strftime('%d %b %Y')
+        subject = f'As of {date}, your total gains are: {total}€'
         message = '\n'.join([f'Gains in {curr}: {amt}€' for curr, amt in gains.items()])
         # Sending mail
         send_mail(sender, recipient, subject, message)
