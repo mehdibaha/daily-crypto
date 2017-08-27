@@ -1,2 +1,2 @@
-# cinqminutesdepause
-Python app for daily litterary delight.
+# coinbase mail
+Python app for daily crypto gains.
