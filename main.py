@@ -1,14 +1,9 @@
-import coinbase
 import datetime
 import os
 import sendgrid
 
-from coinbase.wallet.client import Client
+from gains import get_current_gains
 from sendgrid.helpers.mail import *
-
-if not os.environ.get('PROD'):
-    from dotenv import find_dotenv, load_dotenv
-    load_dotenv(find_dotenv())
 
 def send_mail(sender, recipient, subject, message):
     sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
@@ -17,22 +12,6 @@ def send_mail(sender, recipient, subject, message):
     content = Content('text/plain', message)
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
-
-def get_current_gains():
-    api_key, api_secret = os.environ.get('API_KEY'), os.environ.get('API_SECRET')
-    client = Client(api_key, api_secret)
-
-    accounts = client.get_accounts()['data']
-    gains, total = {}, 0
-    for acc in accounts:
-        id, curr, nat_bal = acc['id'], acc['balance']['currency'], float(acc['native_balance']['amount'])
-        trans = client.get_transactions(id)['data']
-        nat_payments = sum([float(t['native_amount']['amount']) for t in trans])
-        gain = nat_bal - nat_payments
-        total += gain
-        gains[curr] = '{:.2f}'.format(gain)
-    total = '{:.2f}'.format(total)
-    return gains, total
 
 def do_job():
     try:
@@ -46,9 +25,8 @@ def do_job():
         message = '\n'.join([f'Gains in {curr}: {amt}€' for curr, amt in gains.items()])
         # Sending mail
         send_mail(sender, recipient, subject, message)
-        print(f'Mail has been set to {recipient}')
+        print(f'Mail sent to {recipient}')
     except Exception as e:
         print(f'Following error occured: {e}')
 
 do_job()
-
