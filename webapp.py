@@ -12,10 +12,7 @@ def index():
 def entry_point(user):
     if user not in ['mehdi', 'ali']:
         return 'no user found.'
-    if user == 'mehdi':
-        gains, total = get_current_gains()
-    if user == 'ali':
-        gains, total = {'ETH': '0.0', 'BTC': '0.0'}, '0.0'
+    gains, total = get_current_gains(user)
     s = [f'Your total gains are: {total}€']
     s += [f'Gains in {curr}: {amt}€' for curr, amt in gains.items()]
     return '<br>'.join(s)
