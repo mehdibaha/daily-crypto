@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    root = request.url.split('/')[0]
+    root = request.url.rsplit('/')[0]
     return f'no user selected. go to {root}/<user>'
 
 @app.route('/<user>')
