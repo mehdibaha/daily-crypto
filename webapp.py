@@ -1,11 +1,18 @@
-from flask import Flask
+from flask import Flask, request
 from gains import get_current_gains
 
 app = Flask(__name__)
 
 @app.route('/')
-def entry_point():
-    gains, total = get_current_gains()
+def index():
+    root = request.url.split('com')[0] + 'com'
+    return f'no user selected. go to {root}/user'
+
+@app.route('/<user>')
+def entry_point(user):
+    if user not in ['mehdi', 'ali']:
+        return 'no user found.'
+    gains, total = get_current_gains(user)
     s = [f'Your total gains are: {total}€']
     s += [f'Gains in {curr}: {amt}€' for curr, amt in gains.items()]
     return '<br>'.join(s)
