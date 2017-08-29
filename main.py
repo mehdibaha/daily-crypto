@@ -13,13 +13,13 @@ def send_mail(sender, recipient, subject, message):
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
 
-def do_job():
+def do_job(user_name, user_email):
     try:
         # Getting gains
-        gains, total = get_current_gains()
+        gains, total = get_current_gains(user_name)
         # Setting mail
         sender = ('***REMOVED***', 'Crypto Daily')
-        recipient = '***REMOVED***'
+        recipient = user_email
         date = datetime.datetime.now().strftime('%d/%m/%Y')
         subject = f'[{date}] Your total gains are: {total}€'
         message = '\n'.join([f'Gains in {curr}: {amt}€' for curr, amt in gains.items()])
@@ -29,4 +29,5 @@ def do_job():
     except Exception as e:
         print(f'Following error occured: {e}')
 
-do_job()
+do_job('ali', '***REMOVED***')
+do_job('mehdi', '***REMOVED***')
