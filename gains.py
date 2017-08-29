@@ -3,8 +3,8 @@ import os
 
 from coinbase.wallet.client import Client
 
-def get_current_gains():
-    api_key, api_secret = os.environ.get('API_KEY'), os.environ.get('API_SECRET')
+def get_current_gains(user):
+    api_key, api_secret = os.environ.get(f'API_KEY_{user.upper()}'), os.environ.get(f'API_SECRET_{user.upper()}')
     client = Client(api_key, api_secret)
 
     accounts = client.get_accounts()['data']
