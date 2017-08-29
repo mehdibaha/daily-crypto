@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     root = request.url.split('com')[0] + 'com'
-    return f'no user selected. go to {root}/<user>'
+    return f'no user selected. go to {root}/your_user'
 
 @app.route('/<user>')
 def entry_point(user):
