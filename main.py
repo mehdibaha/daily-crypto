@@ -29,5 +29,4 @@ def do_job(user_name, user_email):
     except Exception as e:
         print(f'Following error occured: {e}')
 
-do_job('ali', '***REMOVED***')
 do_job('mehdi', '***REMOVED***')
