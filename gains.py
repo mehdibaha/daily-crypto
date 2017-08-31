@@ -19,8 +19,6 @@ def get_current_gains(user):
         res = client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-EUR', 'spot'), APIObject)
         spot_price = float(res.amount)
         nat_bal = sum([float(t['amount']['amount']) * spot_price for t in trans])
-        if user == 'mehdi':
-            nat_bal = float(acc['native_balance']['amount'])
         nat_payments = sum([float(t['native_amount']['amount']) for t in trans])
         gain = nat_bal - nat_payments
         total += gain
