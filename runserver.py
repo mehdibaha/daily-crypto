@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, render_template, request
 from gains import get_current_gains
 
 app = Flask(__name__)
@@ -12,9 +12,7 @@ def entry_point(user):
     if user not in ['mehdi', 'ali']:
         return 'no user found.'
     gains, total = get_current_gains(user)
-    s = [f'Your total gains are: {total}€']
-    s += [f'Gains in {curr}: {amt}€' for curr, amt in gains.items()]
-    return '<br>'.join(s)
+    return render_template('index.html', gains=gains, total=total)
 
 if __name__ == '__main__':
     app.run(debug=True)
