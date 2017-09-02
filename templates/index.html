@@ -16,6 +16,12 @@
   h3 {
     font-size: 1.3em;
   }
+  .loss {
+    color: #C62828;
+  }
+  .gain {
+    color: #388E3C;
+  }
 </style>
 <body>
 
@@ -28,7 +34,9 @@
   <div class="w3-cell-row">
     <div class="w3-cell w3-container">
       <h3>Total Gains</h3>
-      <p>{{ total }}€</p>
+      <p class="{{ 'loss' if total < 0 else 'gain' }}">
+        {{ total | prettify }}
+      </p>
     </div>
   </div>
   <hr>
@@ -36,7 +44,9 @@
     <div class="w3-cell-row">
       <div class="w3-cell w3-container">
         <h3>Gains in {{ curr }}</h3>
-        <p>{{ gain }}€</p>
+        <p class="{{ 'loss' if gain < 0 else 'gain' }}">
+          {{ gain | prettify  }}
+        </p>
       </div>
     </div>
     <hr>
