@@ -2,6 +2,8 @@ import datetime
 import os
 import sendgrid
 
+from webapp import prettify
+
 from gains import get_current_gains
 from sendgrid.helpers.mail import *
 
@@ -17,6 +19,7 @@ def do_job(user_name, user_email):
     try:
         # Getting gains
         gains, total = get_current_gains(user_name)
+        gains, total = {curr:prettify(gain) for curr, gain in gains.items()}, prettify(total)
         # Setting mail
         sender = ('***REMOVED***', 'Crypto Daily')
         recipient = user_email

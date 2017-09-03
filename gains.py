@@ -16,10 +16,10 @@ def get_current_gains(user):
     gains, total = {}, 0
     for acc in accounts:
         id, curr = acc['id'], acc['balance']['currency']
-        if curr == 'EUR':
-            continue
         trans = client.get_transactions(id)['data']
         trans = [t for t in trans if t['type'] == 'buy']
+        if not trans: # if user has bought some currency
+            continue
         res = client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'sell'), APIObject)
         spot_price = float(res.amount)
         nat_bal = sum([float(t['amount']['amount']) * spot_price for t in trans])
