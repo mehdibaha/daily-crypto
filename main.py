@@ -24,8 +24,8 @@ def do_job(user_name, user_email):
         sender = ('***REMOVED***', 'Crypto Daily')
         recipient = user_email
         date = datetime.datetime.now().strftime('%d/%m/%Y')
-        subject = f'[{date}] Your total gains are: {total}€'
-        message = '\n'.join([f'Gains in {curr}: {amt}€' for curr, amt in gains.items()])
+        subject = f'[{date}] Your total gains are: {total}'
+        message = '\n'.join([f'Gains in {curr}: {amt}' for curr, amt in gains.items()])
         # Sending mail
         send_mail(sender, recipient, subject, message)
         print(f'Mail sent to {recipient}')
