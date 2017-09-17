@@ -17,20 +17,19 @@ def entry_point(user):
     if user not in ['mehdi', 'ali']:
         return 'no user found.'
     try:
-        gains, total = get_current_gains(user)
+        gains = get_current_gains(user)
     except Exception as e:
         print(f'following error has occured\n{e}')
-        gains, total = get_fake_gains(user)
-    return render_template('index.html', gains=gains, total=total)
+        gains = get_fake_gains(user)
+    return render_template('index.html', gains=gains)
 
 @app.template_filter('prettify')
-def prettify(amt):
+def prettify(amt, curr=None):
     currencies = {'USD': '$', 'EUR': '€', 'GBP': '£'}
     nat_curr = os.environ.get('NAT_CURRENCY', 'EUR')
-    fmt = '+' if amt > 0 else '' # Adding value sign
-    fmt += '{:.2f}'.format(amt) # Setting float precision
-    fmt += currencies[nat_curr] # Add currency symbol
-    return fmt
+    amt = '{:.2f}'.format(amt) # Setting float precision
+    amt += currencies[nat_curr] if not curr else curr
+    return amt
 
 if __name__ == '__main__':
     app.run(debug=True)

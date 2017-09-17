@@ -13,26 +13,30 @@ def get_current_gains(user):
     nat_curr = os.environ.get('NAT_CURRENCY', 'EUR')
 
     accounts = client.get_accounts()['data']
-    gains, total = {}, 0
+    gains = []
     for acc in accounts:
         id, curr = acc['id'], acc['balance']['currency']
         trans = client.get_transactions(id)['data']
         trans = [t for t in trans if t['type'] == 'buy']
         if not trans: # if user has bought some currency
             continue
-        res = client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'sell'), APIObject)
-        spot_price = float(res.amount)
-        nat_bal = sum([float(t['amount']['amount']) * spot_price for t in trans])
-        nat_bal -= SELL_FEE*nat_bal
-        nat_payments = sum([float(t['native_amount']['amount']) for t in trans])
-        gain = nat_bal - nat_payments
-        total += gain
-        gains[curr] = gain
-    return gains, total
+        coin_buys = [float(t['amount']['amount']) for t in trans]
+        native_buys = [float(t['native_amount']['amount']) for t in trans]
+        # Getting spot price
+        coin_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'sell'), APIObject).amount)
+        # Calculating final gains
+        native_payments = sum(native_buys)
+        coin_balance = sum(coin_buys)
+        native_balance = sum([t*coin_price*(1-SELL_FEE) for t in coin_buys])
+        native_gain = native_balance - native_payments
+        gains.append({'currency': curr, 'gain': native_gain, 'native_balance': native_balance, 'coin_balance': coin_balance})
+    return gains
 
 def get_fake_gains(user):
-    gains, total =  {'ETH': -51.23, 'BTC': 53.4, 'LTC': 0.0}, 2.1700001
-    return gains, total
+    gains = []
+    gains.append({'currency': 'BTC', 'gain': 53.4, 'native_balance': 100, 'coin_balance': 0.01})
+    gains.append({'currency': 'ETH', 'gain': -12.3, 'native_balance': 200, 'coin_balance': 0.23})
+    return gains
 
 
 
