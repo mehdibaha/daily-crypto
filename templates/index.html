@@ -39,11 +39,11 @@
       <h3>Total Gains</h3>
       {% set total=gains|sum(attribute='gain') %}
       {% set coins=gains|sum(attribute='coin_balance') %}
-      {% set balance=gains|sum(attribute='native_balance') %}
+      {% set payments=gains|sum(attribute='native_payments') %}
       <p class="{{ 'loss' if total < 0 else 'gain' }}">
         {{ total| prettify }}
       </p>
-      <i>You have spent {{ balance|prettify }}</i>
+      <i>You have spent {{ payments|prettify }}</i>
     </div>
   </div>
   <hr>
@@ -54,7 +54,7 @@
         <p class="{{ 'loss' if g.gain < 0 else 'gain' }}">
           {{ g.gain | prettify  }}
         </p>
-        <i>You own {{ g.coin_balance|prettify(g.currency) }} and you have spent {{ g.native_balance|prettify }}</i>
+        <i>You own {{ g.coin_balance|prettify(g.currency) }} and you have spent {{ g.native_payments|prettify }}</i>
       </div>
     </div>
     <hr>

@@ -29,13 +29,13 @@ def get_current_gains(user):
         coin_balance = sum(coin_buys)
         native_balance = sum([t*coin_price*(1-SELL_FEE) for t in coin_buys])
         native_gain = native_balance - native_payments
-        gains.append({'currency': curr, 'gain': native_gain, 'native_balance': native_balance, 'coin_balance': coin_balance})
+        gains.append({'currency': curr, 'gain': native_gain, 'native_payments': native_payments, 'coin_balance': coin_balance})
     return gains
 
 def get_fake_gains(user):
     gains = []
-    gains.append({'currency': 'BTC', 'gain': 53.4, 'native_balance': 100, 'coin_balance': 0.01})
-    gains.append({'currency': 'ETH', 'gain': -12.3, 'native_balance': 200, 'coin_balance': 0.23})
+    gains.append({'currency': 'ETH', 'gain': -12.3, 'native_payments': 200, 'coin_balance': 0.23})
+    gains.append({'currency': 'BTC', 'gain': 53.4, 'native_payments': 100, 'coin_balance': 0.01})
     return gains
 
 
