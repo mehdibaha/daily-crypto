@@ -50,11 +50,12 @@
   {% for g in gains %}
     <div class="w3-cell-row">
       <div class="w3-cell w3-container">
-        <h3>Gains in {{ g.currency }}</h3>
+        <h3>{{ g.name }}</h3>
         <p class="{{ 'loss' if g.gain < 0 else 'gain' }}">
           {{ g.gain | prettify  }}
         </p>
-        <i>You own {{ g.coin_balance|prettify(g.currency) }} and you have spent {{ g.native_payments|prettify }}</i>
+        <i>You own <b>{{ g.coin_balance|prettify(g.currency) }}</b> and you have spent <b>{{ g.native_payments|prettify }}</b></i></br>
+        <i>Buy @ <b>{{ g.buy_price|prettify }}</b> Sell @ <b>{{ g.sell_price|prettify }}</b></i>
       </div>
     </div>
     <hr>

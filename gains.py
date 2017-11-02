@@ -15,7 +15,7 @@ def get_current_gains(user):
     accounts = client.get_accounts()['data']
     gains = []
     for acc in accounts:
-        id, curr = acc['id'], acc['balance']['currency']
+        id, curr, name = acc['id'], acc['balance']['currency'], acc['name']
         trans = client.get_transactions(id)['data']
         trans = [t for t in trans if t['type'] == 'buy']
         if not trans: # if user has bought some currency
@@ -23,19 +23,28 @@ def get_current_gains(user):
         coin_buys = [float(t['amount']['amount']) for t in trans]
         native_buys = [float(t['native_amount']['amount']) for t in trans]
         # Getting spot price
-        coin_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'sell'), APIObject).amount)
+        sell_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'sell'), APIObject).amount)
+        buy_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'buy'), APIObject).amount)
         # Calculating final gains
         native_payments = sum(native_buys)
         coin_balance = sum(coin_buys)
-        native_balance = sum([t*coin_price*(1-SELL_FEE) for t in coin_buys])
+        native_balance = sum([t*sell_price*(1-SELL_FEE) for t in coin_buys])
         native_gain = native_balance - native_payments
-        gains.append({'currency': curr, 'gain': native_gain, 'native_payments': native_payments, 'coin_balance': coin_balance})
+        gains.append({
+            'currency': curr,
+            'name': name,
+            'gain': native_gain,
+            'native_payments': native_payments,
+            'coin_balance': coin_balance,
+            'buy_price': buy_price,
+            'sell_price': sell_price,
+        })
     return gains
 
 def get_fake_gains(user):
     gains = []
-    gains.append({'currency': 'ETH', 'gain': -12.3, 'native_payments': 200, 'coin_balance': 0.23})
-    gains.append({'currency': 'BTC', 'gain': 53.4, 'native_payments': 100, 'coin_balance': 0.01})
+    gains.append({'currency': 'ETH', 'name': 'Ethereum', 'gain': -10.5, 'native_payments': 200, 'coin_balance': 0.12, 'buy_price': 500.12, 'sell_price': 400.34})
+    gains.append({'currency': 'BTC', 'name': 'Bitcoin', 'gain': 20.5, 'native_payments': 100, 'coin_balance': 0.23, 'buy_price': 100.12, 'sell_price': 200.34})
     return gains
 
 
