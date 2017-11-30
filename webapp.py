@@ -17,7 +17,7 @@ def entry_point(user):
     if user not in ['mehdi', 'ali']:
         return 'no user found.'
     try:
-        gains = get_current_gains(user)
+        gains = list(get_current_gains(user))
     except Exception as e:
         print(f'following error has occured\n{e}')
         gains = get_fake_gains(user)

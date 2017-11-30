@@ -12,33 +12,33 @@ def get_current_gains(user):
     client = Client(api_key, api_secret)
     nat_curr = os.environ.get('NAT_CURRENCY', 'EUR')
 
-    accounts = client.get_accounts()['data']
+    accounts = client.get_accounts()
     gains = []
-    for acc in accounts:
-        id, curr, name = acc['id'], acc['balance']['currency'], acc['name']
-        trans = client.get_transactions(id)['data']
-        trans = [t for t in trans if t['type'] == 'buy']
+    for acc in accounts.data:
+        id, curr, name = acc.id, acc.balance.currency, acc.name
+        trans = client.get_transactions(id).data
+        trans = [t for t in trans if t.type == 'buy']
+        trans = [t for t in trans if 'Wallet' not in t.details.payment_method_name]
         if not trans: # if user has bought some currency
             continue
-        coin_buys = [float(t['amount']['amount']) for t in trans]
-        native_buys = [float(t['native_amount']['amount']) for t in trans]
+        coin_buys = [float(t.amount.amount) for t in trans]
+        native_buys = [float(t.native_amount.amount) for t in trans]
         # Getting spot price
         sell_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'sell'), APIObject).amount)
         buy_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'buy'), APIObject).amount)
         # Calculating final gains
         native_payments = sum(native_buys)
-        coin_balance = sum(coin_buys)
         native_balance = sum([t*sell_price*(1-SELL_FEE) for t in coin_buys])
         native_gain = native_balance - native_payments
-        gains.append({
+        yield {
             'currency': curr,
             'name': name,
             'gain': native_gain,
             'native_payments': native_payments,
-            'coin_balance': coin_balance,
+            'coin_balance': float(acc.balance.amount),
             'buy_price': buy_price,
             'sell_price': sell_price,
-        })
+        }
     return gains
 
 def get_fake_gains(user):
