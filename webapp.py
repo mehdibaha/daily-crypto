@@ -1,10 +1,13 @@
 import os
 
 from flask import Flask, jsonify, render_template, request
+from flask_cors import CORS
 from gains import get_current_gains, get_fake_gains
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+CORS(app)
 
 NAT_CURR = 'EUR'
 
