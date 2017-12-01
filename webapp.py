@@ -1,3 +1,4 @@
+import logging
 import os
 
 from flask import Flask, jsonify, render_template, request
@@ -8,6 +9,8 @@ app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 CORS(app)
+
+logging.getLogger('flask_cors').level = logging.DEBUG
 
 NAT_CURR = 'EUR'
 
