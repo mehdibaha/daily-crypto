@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
 from gains import get_current_gains, get_fake_gains
 
 app = Flask(__name__)
@@ -21,6 +21,8 @@ def entry_point(user):
     except Exception as e:
         print(f'following error has occured\n{e}')
         gains = get_fake_gains(user)
+    if request.args.get('json'):
+        return jsonify(gains)
     return render_template('index.html', gains=gains)
 
 @app.template_filter('prettify')
