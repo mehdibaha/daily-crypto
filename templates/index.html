@@ -41,7 +41,7 @@
       <p class="{{ 'loss' if total < 0 else 'gain' }}">
         {{ total| prettify }}
       </p>
-      <i>You have spent {{ payments|prettify }}</i>
+      <i>You have spent <b>{{ payments|prettify }}</b></i>
     </div>
   </div>
   <hr>
@@ -52,7 +52,7 @@
         <p class="{{ 'loss' if g.gain < 0 else 'gain' }}">
           {{ g.gain | prettify  }}
         </p>
-        <i>You own <b>{{ g.coin_balance|prettify(g.currency) }}</b> and you have spent <b>{{ g.native_payments|prettify }}</b></i></br>
+        <i>You bought <b>{{ g.coin_balance|prettify(g.currency) }}</b> and you spent <b>{{ g.native_payments|prettify }}</b></i></br>
         <i>Buy @ <b>{{ g.buy_price|prettify }}</b> Sell @ <b>{{ g.sell_price|prettify }}</b></i>
       </div>
     </div>

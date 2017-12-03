@@ -1,5 +1,6 @@
 import logging
 import os
+import traceback
 
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
@@ -9,8 +10,6 @@ app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 CORS(app)
-
-logging.getLogger('flask_cors').level = logging.DEBUG
 
 NAT_CURR = 'EUR'
 
@@ -25,7 +24,7 @@ def entry_point(user):
     try:
         gains = list(get_current_gains(user))
     except Exception as e:
-        print(f'following error has occured\n{e}')
+        traceback.print_exc()
         gains = get_fake_gains(user)
     if request.args.get('json'):
         return jsonify(gains)

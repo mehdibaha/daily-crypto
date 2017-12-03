@@ -17,8 +17,8 @@ def get_current_gains(user):
     for acc in accounts.data:
         id, curr, name = acc.id, acc.balance.currency, acc.name
         trans = client.get_transactions(id).data
-        trans = [t for t in trans if t.type == 'buy']
-        trans = [t for t in trans if 'Wallet' not in t.details.payment_method_name]
+        coin_sells = [float(t.amount.amount) for t in trans if t.type == 'sell']
+        trans = [t for t in trans if t.type == 'buy' and 'wallet' not in t.details.payment_method_name.lower()]
         if not trans: # if user has bought some currency
             continue
         coin_buys = [float(t.amount.amount) for t in trans]
@@ -27,15 +27,16 @@ def get_current_gains(user):
         sell_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'sell'), APIObject).amount)
         buy_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'buy'), APIObject).amount)
         # Calculating final gains
-        native_payments = sum(native_buys)
         native_balance = sum([t*sell_price*(1-SELL_FEE) for t in coin_buys])
-        native_gain = native_balance - native_payments
+        native_payments = sum(native_buys)
+        coin_balance = sum(coin_buys) + sum(coin_sells)
+        gain = native_balance - native_payments
         yield {
             'currency': curr,
             'name': name,
-            'gain': native_gain,
+            'gain': gain,
             'native_payments': native_payments,
-            'coin_balance': float(acc.balance.amount),
+            'coin_balance': coin_balance,
             'buy_price': buy_price,
             'sell_price': sell_price,
         }
