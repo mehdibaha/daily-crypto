@@ -30,7 +30,7 @@ def get_current_gains(user):
         buy_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'buy'), APIObject).amount)
         # Calculating final gains
         native_balance = sum([t*sell_price*(1-SELL_FEE) for t in coin_buys])
-        native_balance -= sum([t*sell_price*(1-SELL_FEE) for t in coin_sells])
+        native_balance += sum([t*sell_price*(1-SELL_FEE) for t in coin_sells])
         native_payments = sum(native_buys)
         gain = native_balance - native_payments
         gains.append({
