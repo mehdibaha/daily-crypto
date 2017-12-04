@@ -17,6 +17,7 @@ def get_current_gains(user):
     for acc in accounts.data:
         id, curr, name = acc.id, acc.balance.currency, acc.name
         trans = client.get_transactions(id).data
+        orig_trans = trans
         coin_sells = [float(t.amount.amount) for t in trans if t.type == 'sell']
         trans = [t for t in trans if t.type == 'buy' and 'wallet' not in t.details.payment_method_name.lower()]
         if not trans: # if user has bought some currency
@@ -40,7 +41,7 @@ def get_current_gains(user):
             'buy_price': buy_price,
             'sell_price': sell_price,
         }
-    return gains
+    return gains, orig_trans
 
 def get_fake_gains(user):
     gains = []
