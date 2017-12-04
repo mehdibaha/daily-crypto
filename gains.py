@@ -23,16 +23,17 @@ def get_current_gains(user):
         if not trans: # if user has bought some currency
             continue
         coin_buys = [float(t.amount.amount) for t in trans]
+        coin_balance = sum(coin_buys) + sum(coin_sells)
         native_buys = [float(t.native_amount.amount) for t in trans]
         # Getting spot price
         sell_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'sell'), APIObject).amount)
         buy_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'buy'), APIObject).amount)
         # Calculating final gains
         native_balance = sum([t*sell_price*(1-SELL_FEE) for t in coin_buys])
+        native_balance -= sum([t*sell_price*(1-SELL_FEE) for t in coin_sells])
         native_payments = sum(native_buys)
-        coin_balance = sum(coin_buys) + sum(coin_sells)
         gain = native_balance - native_payments
-        yield {
+        gains.append({
             'currency': curr,
             'name': name,
             'gain': gain,
@@ -40,7 +41,7 @@ def get_current_gains(user):
             'coin_balance': coin_balance,
             'buy_price': buy_price,
             'sell_price': sell_price,
-        }
+        })
     return gains, orig_trans
 
 def get_fake_gains(user):

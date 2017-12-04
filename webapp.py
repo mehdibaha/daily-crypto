@@ -22,14 +22,14 @@ def entry_point(user):
     if user not in ['mehdi', 'ali']:
         return 'no user found.'
     try:
-        gains, trans = list(get_current_gains(user))
+        gains, trans = get_current_gains(user)
     except Exception as e:
         traceback.print_exc()
         gains, trans = get_fake_gains(user), {'error': True}
     if request.args.get('json'):
         return jsonify(gains)
     if request.args.get('raw'):
-        returm jsonify(trans)
+        return jsonify(trans)
     return render_template('index.html', gains=gains)
 
 @app.template_filter('prettify')
