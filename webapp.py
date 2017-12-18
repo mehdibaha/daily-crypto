@@ -19,7 +19,7 @@ def index():
 
 @app.route('/<user>')
 def entry_point(user):
-    if user not in ['mehdi', 'ali']:
+    if user not in ['mehdi', 'xxx']:
         return 'no user found.'
     try:
         gains, trans = get_current_gains(user)
