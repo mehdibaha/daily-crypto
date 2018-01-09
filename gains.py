@@ -25,7 +25,7 @@ def get_current_gains(user):
         buy_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'buy'), APIObject).amount)
         # Getting fiat payments and balance
         fiat_balance = coin_balance*sell_price*(1-SELL_FEE)
-        fiat_buys = sum([float(b['total']['amount']) for b in client.get_buys(id).data])
+        fiat_buys = sum([float(b['total']['amount']) for b in client.get_buys(id).data if b['status'] == 'completed'])
 
         gains.append({
             'currency': curr,
