@@ -19,17 +19,13 @@ def index():
 
 @app.route('/<user>')
 def entry_point(user):
-    if user not in ['mehdi', 'xxx']:
+    if user not in ['mehdi', 'alix']:
         return 'no user found.'
     try:
-        gains, trans = get_current_gains(user)
+        gains = get_current_gains(user)
     except Exception as e:
         traceback.print_exc()
-        gains, trans = get_fake_gains(user), {'error': True}
-    if request.args.get('json'):
-        return jsonify(gains)
-    if request.args.get('raw'):
-        return jsonify(trans)
+        gains = get_fake_gains(user)
     return render_template('index.html', gains=gains)
 
 @app.template_filter('prettify')

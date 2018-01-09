@@ -18,11 +18,8 @@
   h3 {
     font-size: 1.3em;
   }
-  .loss {
-    color: #C62828;
-  }
-  .gain {
-    color: #388E3C;
+  .blue {
+    color: #3f51b5;
   }
 </style>
 </head>
@@ -35,10 +32,10 @@
   <div class="w3-cell-row">
     <div class="w3-cell w3-container">
       <h3>Total Gains</h3>
-      {% set total=gains|sum(attribute='gain') %}
+      {% set total=gains|sum(attribute='fiat_balance') %}
       {% set coins=gains|sum(attribute='coin_balance') %}
-      {% set payments=gains|sum(attribute='native_payments') %}
-      <p class="{{ 'loss' if total < 0 else 'gain' }}">
+      {% set payments=gains|sum(attribute='fiat_buys') %}
+      <p class="blue">
         {{ total| prettify }}
       </p>
       <i>You have spent <b>{{ payments|prettify }}</b></i>
@@ -49,10 +46,10 @@
     <div class="w3-cell-row">
       <div class="w3-cell w3-container">
         <h3>{{ g.name }}</h3>
-        <p class="{{ 'loss' if g.gain < 0 else 'gain' }}">
-          {{ g.gain | prettify  }}
+        <p class="blue">
+          {{ g.fiat_balance | prettify  }}
         </p>
-        <i>You bought <b>{{ g.coin_balance|prettify(g.currency) }}</b> and you spent <b>{{ g.native_payments|prettify }}</b></i></br>
+        <i>You bought <b>{{ g.coin_balance|prettify(g.currency) }}</b> and you spent <b>{{ g.fiat_buys|prettify }}</b></i></br>
         <i>Buy @ <b>{{ g.buy_price|prettify }}</b> Sell @ <b>{{ g.sell_price|prettify }}</b></i>
       </div>
     </div>
