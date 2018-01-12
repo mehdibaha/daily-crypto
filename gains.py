@@ -4,11 +4,9 @@ import os
 from coinbase.wallet.client import Client
 from coinbase.wallet.model import APIObject
 
-# source: https://support.coinbase.com/customer/portal/articles/2109597-buy-sell-bank-transfer-fees
-SELL_FEE = 0.0149
+SELL_FEE = 0.0149 #see: https://support.coinbase.com/customer/portal/articles/2109597-buy-sell-bank-transfer-fees
 
 def get_current_gains(user):
-    user = 'ali' if user is 'alix' else user
     api_key, api_secret = os.environ.get(f'API_KEY_{user.upper()}'), os.environ.get(f'API_SECRET_{user.upper()}')
     client = Client(api_key, api_secret)
     nat_curr = os.environ.get('NAT_CURRENCY', 'EUR')
