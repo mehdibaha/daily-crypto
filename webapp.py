@@ -11,7 +11,7 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 CORS(app)
 
-NAT_CURR = 'EUR'
+USER_LIST = ['mehdi']
 
 @app.route('/')
 def index():
@@ -19,7 +19,7 @@ def index():
 
 @app.route('/<user>')
 def entry_point(user):
-    if user not in ['mehdi', 'alix']:
+    if user not in USER_LIST:
         return 'no user found.'
     try:
         gains = get_current_gains(user)
