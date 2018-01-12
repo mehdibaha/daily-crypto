@@ -1,2 +1,2 @@
-# coinbase mail
-Python app for daily crypto gains.
+# Daily Crypto
+Python web app to track personal earnings.
