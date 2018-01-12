@@ -21,7 +21,7 @@ def do_job(user_name, user_email):
         gains, total = get_current_gains(user_name)
         gains, total = {curr:prettify(gain) for curr, gain in gains.items()}, prettify(total)
         # Setting mail
-        sender = ('***REMOVED***', 'Crypto Daily')
+        sender = ('no-reply@coinbase-fake.com', 'Crypto Daily')
         recipient = user_email
         date = datetime.datetime.now().strftime('%d/%m/%Y')
         subject = f'[{date}] Your total gains are: {total}'
