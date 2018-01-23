@@ -31,7 +31,7 @@
   <hr>
   <div class="w3-cell-row">
     <div class="w3-cell w3-container">
-      <h3>Total Gains</h3>
+      <h3>What you own</h3>
       {% set total=gains|sum(attribute='fiat_balance') %}
       {% set coins=gains|sum(attribute='coin_balance') %}
       {% set payments=gains|sum(attribute='fiat_buys') %}
