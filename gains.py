@@ -19,6 +19,8 @@ def get_current_gains(user):
         # Getting coin balance
         coin_balance = float(acc.balance.amount)
         # Getting market price
+        if curr == 'EUR' or coin_balance == 0.0:
+            continue
         sell_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'sell'), APIObject).amount)
         buy_price = float(client._make_api_object(client._get('v2', 'prices', f'{curr.upper()}-{nat_curr}', 'buy'), APIObject).amount)
         # Getting fiat payments and balance

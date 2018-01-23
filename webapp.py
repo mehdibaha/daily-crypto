@@ -11,7 +11,7 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 CORS(app)
 
-USER_LIST = ['mehdi']
+USER_LIST = ['mehdi', 'juliette']
 
 @app.route('/')
 def index():
