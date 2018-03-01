@@ -21,6 +21,9 @@
   .blue {
     color: #3f51b5;
   }
+  .pink {
+    color: #ff1493;
+  }
 </style>
 </head>
 <body>
@@ -46,7 +49,7 @@
     <div class="w3-cell-row">
       <div class="w3-cell w3-container">
         <h3>{{ g.name }}</h3>
-        <p class="blue">
+        <p class="pink">
           {{ g.fiat_balance | prettify  }}
         </p>
         <i>You bought <b>{{ g.coin_balance|prettify(g.currency) }}</b> and you spent <b>{{ g.fiat_buys|prettify }}</b></i></br>
