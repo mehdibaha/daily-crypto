@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="https://bitpay.com/favicon.ico">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3mobile.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-indigo.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-pink.css">
 <style>
   @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300ita‌​lic,400italic,500,500italic,700,700italic,900italic,900);
   html, html * {
@@ -38,7 +38,7 @@
       {% set total=gains|sum(attribute='fiat_balance') %}
       {% set coins=gains|sum(attribute='coin_balance') %}
       {% set payments=gains|sum(attribute='fiat_buys') %}
-      <p class="blue">
+      <p class="pink">
         {{ total| prettify }}
       </p>
       <i>You have spent <b>{{ payments|prettify }}</b></i>
